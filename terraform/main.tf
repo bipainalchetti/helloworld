@@ -1,27 +1,37 @@
-# Configure the Azure Provider
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.53.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~>4.0"
+    }
+  }
+  backend "azurerm" {
+      resource_group_name  = "ODL-azure-1288259"
+      storage_account_name = "tfstate15017"
+      container_name       = "tfstate"
+      key                  = "terraform.tfstate"
+  }  
+}
+
 provider "azurerm" {
-  version = "=3.53.0"
+  # Configuration options
   features {}
 }
 
-backend "azurerm" {
-    resource_group_name  = "ODL-azure-1288259"
-    storage_account_name = "tfstate22339"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-}  
-
 # Create a Resource Group
-resource "azurerm_resource_group" "rg" {
+data "azurerm_resource_group" "rg" {
   name     = "ODL-azure-1288206"
-  location = "westus"
 }
 
 # Create a Key Vault
 resource "azurerm_key_vault" "keyvault" {
   name                        = "odlkeyvault1288206"
-  location                    = azurerm_resource_group.rg.location
-  resource_group_name         = azurerm_resource_group.rg.name
+  location                    = data.azurerm_resource_group.rg.location
+  resource_group_name         = data.azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
@@ -67,15 +77,15 @@ resource "azurerm_key_vault_key" "key" {
 # Create a Storage Account
 resource "azurerm_storage_account" "storage" {
   name                     = "odlstorage1288206"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
+  resource_group_name      = data.azurerm_resource_group.rg.name
+  location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
   # Associate the Key from Key Vault with the Storage Account
   customer_managed_key {
     key_vault_key_id = azurerm_key_vault_key.key.id
-    key_name         = azurerm_key_vault_key.key.name
+    user_assigned_identity_id = "example_uami"
   }
 }
 
