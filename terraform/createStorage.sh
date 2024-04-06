@@ -1,7 +1,7 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME=ODL-azure-1287978
-STORAGE_ACCOUNT_NAME=tfstatebpsea
+RESOURCE_GROUP_NAME=ODL-azure-1287995
+STORAGE_ACCOUNT_NAME=tfstate$RANDOM
 CONTAINER_NAME=tfstate
 # Create storage account
 az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob
