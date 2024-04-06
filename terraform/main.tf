@@ -78,3 +78,7 @@ resource "azurerm_storage_account" "example" {
     key_vault_key_id = azurerm_key_vault_key.example.id
   }
 }
+
+
+# Retrieve the current client configuration
+data "azurerm_client_config" "current" {}
