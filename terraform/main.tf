@@ -1,31 +1,25 @@
 # Configure the Azure Provider
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.53.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "~>4.0"
-    }
-  }
-  backend "azurerm" {
-      resource_group_name  = "ODL-azure-1288206"
-      storage_account_name = "tfstate22339"
-      container_name       = "tfstate"
-      key                  = "terraform.tfstate"
-  }  
+provider "azurerm" {
+  version = "=3.53.0"
+  features {}
 }
+
+backend "azurerm" {
+    resource_group_name  = "ODL-azure-1288259"
+    storage_account_name = "tfstate22339"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+}  
+
 # Create a Resource Group
 resource "azurerm_resource_group" "rg" {
-  name     = "ODL-azure-1288220"
-  location = "eastus"
+  name     = "ODL-azure-1288206"
+  location = "westus"
 }
 
 # Create a Key Vault
 resource "azurerm_key_vault" "keyvault" {
-  name                        = "odlkeyvault1288220"
+  name                        = "odlkeyvault1288206"
   location                    = azurerm_resource_group.rg.location
   resource_group_name         = azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
@@ -40,15 +34,15 @@ resource "azurerm_key_vault" "keyvault" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "get", "list", "create", "delete", "update",
+      "Get", "List", "Create", "Delete", "Update",
     ]
 
     secret_permissions = [
-      "get", "list", "set", "delete",
+      "Get", "List", "Set", "Delete",
     ]
 
     storage_permissions = [
-      "get", "list",
+      "Get", "List",
     ]
   }
 }
@@ -72,7 +66,7 @@ resource "azurerm_key_vault_key" "key" {
 
 # Create a Storage Account
 resource "azurerm_storage_account" "storage" {
-  name                     = "odlstorage1288220"
+  name                     = "odlstorage1288206"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
@@ -84,3 +78,6 @@ resource "azurerm_storage_account" "storage" {
     key_name         = azurerm_key_vault_key.key.name
   }
 }
+
+# Retrieve the current client configuration
+data "azurerm_client_config" "current" {}
