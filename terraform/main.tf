@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "azurerm" {
-      resource_group_name  = "ODL-azure-1287995"
+      resource_group_name  = "ODL-azure-1288109"
       storage_account_name = "tfstate32587"
       container_name       = "tfstate"
       key                  = "terraform.tfstate"
@@ -24,68 +24,57 @@ provider "azurerm" {
 
 data "azurerm_resource_group" "example" {
   name = var.resource_group_name
+  
+}
+
+resource "random_string" "random_string"{
+    length = 6
+    lower = true
+    upper = false
+    number = true
+    special = false
+}
+
+locals {
+
+    keyvault_key_name = substr(lower(join("",
+    ["kys",
+    substr(next,0,1),
+    substr(sid1, 0, 4),
+    local.keyvault_name,
+    random_string.random_string.result
+    ])), 0, 15)
 }
 
 
-resource "azurerm_virtual_network" "example" {
-  name                = "example-network"
-  address_space       = ["10.0.0.0/16"]
-  location            = data.azurerm_resource_group.example.location
-  resource_group_name = data.azurerm_resource_group.example.name
+# Create an Azure Key Vault
+resource "azurerm_key_vault" "example" {
+  name                = "example-keyvault"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "standard"
 }
 
-resource "azurerm_subnet" "example" {
-  name                 = "internal"
-  resource_group_name  = data.azurerm_resource_group.example.name
-  virtual_network_name = azurerm_virtual_network.example.name
-  address_prefixes     = ["10.0.2.0/24"]
+# Create a customer-managed key in the Key Vault
+resource "azurerm_key_vault_key" "example" {
+  name         = local.keyvault_key_name
+  key_vault_id = azurerm_key_vault.example.id
+  key_type     = "RSA"
+  key_size     = 2048
+  key_opts     = ["decrypt", "encrypt", "sign", "verify"]
 }
 
-resource "azurerm_network_interface" "example" {
-  name                = "example-nic"
-  location            = data.azurerm_resource_group.example.location
-  resource_group_name = data.azurerm_resource_group.example.name
+# Create an Azure Storage Account
+resource "azurerm_storage_account" "example" {
+  name                     = "examplestorage"
+  resource_group_name      = azurerm_resource_group.example.name
+  location                 = azurerm_resource_group.example.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.example.id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
-
-# Create (and display) an SSH key
-resource "tls_private_key" "example_ssh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-
-
-resource "azurerm_linux_virtual_machine" "example" {
-  name                = "example-machine"
-  resource_group_name = data.azurerm_resource_group.example.name
-  location            = data.azurerm_resource_group.example.location
-  size                = "Standard_B2s"
-  admin_username      = "adminuser"
-  network_interface_ids = [
-    azurerm_network_interface.example.id,
-  ]
-
-  admin_ssh_key {
-    username   = "adminuser"
-    public_key = tls_private_key.example_ssh.public_key_openssh
-  }
-
-
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+  # Attach the customer-managed key to the Storage Account
+  customer_managed_key {
+    key_vault_key_id = azurerm_key_vault_key.example.id
   }
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME=ODL-azure-1287995
+RESOURCE_GROUP_NAME=ODL-azure-1288109
 STORAGE_ACCOUNT_NAME=tfstate$RANDOM
 CONTAINER_NAME=tfstate
 # Create storage account
