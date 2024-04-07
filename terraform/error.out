@@ -1,5 +1,5 @@
-│ Error: current client lacks permissions to read Key Rotation Policy for Key "storage-account-key" ("Vault: (Name \"odlkeyvault1288206\" / Resource Group \"ODL-azure-1288259\")", Vault url: "https://odlkeyvault1288206.vault.azure.net/"), please update this as described here: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key#example-usage : keyvault.BaseClient#GetKeyRotationPolicy: Failure responding to request: StatusCode=403 -- Original Error: autorest/azure: Service returned an error. Status=403 Code="Forbidden" Message="The user, group or application 'appid=04b07795-8ddb-461a-bbee-02f9e1bf7b46;oid=8b66c4ef-47c5-4d0d-aa63-7c845519fdea;iss=https://sts.windows.net/d5cb8a33-eea4-444a-9177-3c24547f595d/' does not have keys getrotationpolicy permission on key vault 'odlkeyvault1288206;location=westus'. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125287" InnerError={"code":"ForbiddenByPolicy"}
-│ 
-│   with azurerm_key_vault_key.key,
-│   on main.tf line 61, in resource "azurerm_key_vault_key" "key":
-│   61: resource "azurerm_key_vault_key" "key" {
+[Backup Create Decrypt Delete Encrypt Get Import List Purge Recover Restore Sign UnwrapKey Update Verify WrapKey Release Rotate GetRotationPolicy SetRotationPolicy], 
+
+
+╷
+│ Error: checking for presence of existing Key "examplekey1288488" (Key Vault "https://examplekeyvault1288488.vault.azure.net/"): keyvault.BaseClient#GetKey: Failure responding to request: StatusCode=403 -- Original Error: autorest/azure: Service returned an error. Status=403 Code="Forbidden" Message="The user, group or application 'appid=04b07795-8ddb-461a-bbee-02f9e1bf7b46;oid=126380f4-bf78-4562-a3e2-e0f9c0b4e451;iss=https://sts.windows.net/d5cb8a33-eea4-444a-9177-3c24547f595d/' does not have keys get permission on key vault 'examplekeyvault1288488;location=westus'. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125287" InnerError={"code":"AccessDenied"}
