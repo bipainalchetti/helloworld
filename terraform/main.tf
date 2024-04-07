@@ -78,12 +78,20 @@ resource "azurerm_key_vault_key" "example" {
   key_opts     = ["unwrapKey", "wrapKey"]
 }
 
+resource "azurerm_role_assignment" "example" {
+  scope              = azurerm_resource_group.example.id
+  role_definition_name = "Reader"
+  principal_id       = azurerm_user_assigned_identity.example.principal_id
+}
+
 resource "azurerm_storage_account_customer_managed_key" "example" {
   storage_account_id = azurerm_storage_account.example.id
   key_vault_id       = azurerm_key_vault.example.id
   key_name           = azurerm_key_vault_key.example.name
   user_assigned_identity_id = azurerm_user_assigned_identity.example.id
 }
+
+
 
 # Retrieve the current client configuration
 data "azurerm_client_config" "current" {}
