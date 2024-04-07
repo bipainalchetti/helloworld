@@ -11,7 +11,7 @@ terraform {
   }
   backend "azurerm" {
       resource_group_name  = "ODL-azure-1288488"
-      storage_account_name = "tfstate17569"
+      storage_account_name = "tfstate14339"
       container_name       = "tfstate"
       key                  = "terraform.tfstate"
   }  
