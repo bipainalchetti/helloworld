@@ -1,5 +1,5 @@
 RESOURCE_GROUP_NAME=ODL-azure-1288824
-STORAGE_ACCOUNT_NAME=tfstate14339
+STORAGE_ACCOUNT_NAME=tfstate25719
 CONTAINER_NAME=tfstate
 
 ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
