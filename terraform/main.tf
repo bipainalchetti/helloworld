@@ -29,7 +29,7 @@ data "azurerm_resource_group" "rg" {
 
 # Create a Key Vault
 resource "azurerm_key_vault" "keyvault" {
-  name                        = "odlkeyvault1288206"
+  name                        = "odlkeyvault1288484"
   location                    = data.azurerm_resource_group.rg.location
   resource_group_name         = data.azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
@@ -76,7 +76,7 @@ resource "azurerm_key_vault_key" "key" {
 
 # Create a Storage Account
 resource "azurerm_storage_account" "storage" {
-  name                     = "odlstorage1288206"
+  name                     = "odlstorage1288484"
   resource_group_name      = data.azurerm_resource_group.rg.name
   location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"
