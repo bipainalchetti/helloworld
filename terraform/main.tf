@@ -83,10 +83,12 @@ resource "azurerm_storage_account" "storage" {
   account_replication_type = "LRS"
 
   # Associate the Key from Key Vault with the Storage Account
-  customer_managed_key {
-    key_vault_key_id = azurerm_key_vault_key.key.id
-    user_assigned_identity_id = "example_uami"
-  }
+}
+
+resource "azurerm_storage_account_customer_managed_key" "example" {
+  storage_account_id = azurerm_storage_account.storage.id
+  key_vault_id       = azurerm_key_vault.keyvault.id
+  key_name           = azurerm_key_vault_key.key.name
 }
 
 # Retrieve the current client configuration
