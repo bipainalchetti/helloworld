@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "azurerm" {
-      resource_group_name  = "ODL-azure-1288484"
+      resource_group_name  = "ODL-azure-1288488"
       storage_account_name = "tfstate17569"
       container_name       = "tfstate"
       key                  = "terraform.tfstate"
@@ -24,12 +24,12 @@ provider "azurerm" {
 
 # Create a Resource Group
 data "azurerm_resource_group" "rg" {
-  name     = "ODL-azure-1288484"
+  name     = "ODL-azure-1288488"
 }
 
 # Create a Key Vault
 resource "azurerm_key_vault" "keyvault" {
-  name                        = "odlkeyvault1288484"
+  name                        = "odlkeyvault1288488"
   location                    = data.azurerm_resource_group.rg.location
   resource_group_name         = data.azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
@@ -76,7 +76,7 @@ resource "azurerm_key_vault_key" "key" {
 
 # Create a Storage Account
 resource "azurerm_storage_account" "storage" {
-  name                     = "odlstorage1288484"
+  name                     = "odlstorage1288488"
   resource_group_name      = data.azurerm_resource_group.rg.name
   location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"
