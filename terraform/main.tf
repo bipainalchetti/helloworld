@@ -24,7 +24,7 @@ provider "azurerm" {
 
 # Create a Resource Group
 data "azurerm_resource_group" "rg" {
-  name     = "ODL-azure-1288206"
+  name     = "ODL-azure-1288484"
 }
 
 # Create a Key Vault
