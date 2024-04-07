@@ -79,7 +79,7 @@ resource "azurerm_key_vault_key" "example" {
 }
 
 resource "azurerm_role_assignment" "example" {
-  scope              = azurerm_resource_group.example.id
+  scope              = data.azurerm_resource_group.example.id
   role_definition_name = "Reader"
   principal_id       = azurerm_user_assigned_identity.example.principal_id
 }
