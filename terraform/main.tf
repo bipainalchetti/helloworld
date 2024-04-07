@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "azurerm" {
-      resource_group_name  = "ODL-azure-1288259"
+      resource_group_name  = "ODL-azure-1288484"
       storage_account_name = "tfstate15017"
       container_name       = "tfstate"
       key                  = "terraform.tfstate"
@@ -44,7 +44,7 @@ resource "azurerm_key_vault" "keyvault" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "Get", "List", "Create", "Delete", "Update",
+      "Get", "List", "Create", "Delete", "Update", "GetRotationPolicy", "SetRotationPolicy"
     ]
 
     secret_permissions = [
