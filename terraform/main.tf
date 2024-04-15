@@ -10,8 +10,8 @@ terraform {
     }
   }
   backend "azurerm" {
-      resource_group_name  = "ODL-azure-1293526"
-      storage_account_name = "tfstate25719"
+      resource_group_name  = "ODL-azure-1296088"
+      storage_account_name = "tfstate1296088"
       container_name       = "tfstate"
       key                  = "terraform.tfstate"
   }  
@@ -24,7 +24,7 @@ provider "azurerm" {
 
 # Create a Resource Group
 data "azurerm_resource_group" "example" {
-  name     = "ODL-azure-1293526"
+  name     = "ODL-azure-1296088"
 }
 
 resource "azurerm_user_assigned_identity" "example" {
@@ -34,7 +34,7 @@ resource "azurerm_user_assigned_identity" "example" {
 }
 
 resource "azurerm_storage_account" "example" {
-  name                     = "examplestorage12935265"
+  name                     = "examplestorage12960885"
   resource_group_name      = data.azurerm_resource_group.example.name
   location                 = data.azurerm_resource_group.example.location
   account_tier             = "Standard"
